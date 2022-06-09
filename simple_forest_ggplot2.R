@@ -3,7 +3,7 @@
 library(tidyverse)
 
 ## load results file containing associations between iron/ferritin polygenic scores and several outcomes
-dat = read_tsv("I:/Projects/Luke/Plots/Pilling_HFEpenetrance_20210825/_data_iron_pgs.txt")
+dat = read_tsv("_data_iron_pgs.txt")
 
 ## filter results to just the outcome and explosure you want to plot
 ##    -- here I subset by 3 things (outcome, exposure, and sex) -- you might not need to do any
