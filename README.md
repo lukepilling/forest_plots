@@ -7,9 +7,8 @@ Examples using data from our 2022 paper on iron polygenic score associations wit
 
 ## Simple example using `ggplot2`
 
-[Link to syntax](https://github.com/lukepilling/forest_plots/blob/main/simple_forest_ggplot2.R)
+[Link to syntax](https://github.com/lukepilling/forest_plots/blob/main/simple_forest_ggplot2.R). Example output:
 
-Example output:
-<img src="https://github.com/lukepilling/forest_plots/blob/main/simple_forest_ggplot2.jpg?raw=true" width="500" />
+<img src="https://github.com/lukepilling/forest_plots/blob/main/simple_forest_ggplot2.jpg?raw=true" width="700" />
 
 
