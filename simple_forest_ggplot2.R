@@ -35,6 +35,9 @@ p = ggplot(data=dat2, aes(x=est, y=label, xmin=lower, xmax=upper)) +
 
 p
 
+## lots of others themes to consider e.g.
+##    theme_grey() ## ggplot2 default
+##    see https://ggplot2.tidyverse.org/reference/ggtheme.html for more
 
 ## save last figure
 ggsave('simple_forest_ggplot2.jpg', p, width=14, height=8, units='cm', dpi=500)
