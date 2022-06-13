@@ -1,0 +1,2 @@
+.libPaths(c("C:/Users/lp302/R/4.1.1","C:/Program Files/R/R-4.1.1/library"))
+setwd("C:/Users/lp302/OneDrive - University of Exeter/Scripts/forest_plots")
