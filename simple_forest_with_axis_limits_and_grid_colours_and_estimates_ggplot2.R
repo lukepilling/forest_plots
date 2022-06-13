@@ -26,9 +26,11 @@ dat2 = dat %>%
   select(label, est, lower, upper)
 
 ## by default the order of the rows is the original order in the file
-## to arrange by estimate (highest to lowest) uncomment these lines:
+## to arrange by estimate (highest to lowest) uncomment this line:
 dat2 = dat2 %>% arrange(est)
-dat2$label = factor(dat2$label, levels = dat2$label[1:length(dat2$label)])
+
+## make label a "factor" so order is preserved on plot
+dat2$label = factor(dat2$label, levels = unique(dat2$label))
 
 ## create variable to store background colour info so we can alternate between white and grey
 dat2$colour = "white"
@@ -43,14 +45,17 @@ for (ii in 1:nrow(dat2))  dat2$est_combined[ii] = paste0(round_hr(dat2$est[ii]),
 x_minimum = 0.899
 x_maximum = 2.01
 x_maximum_labels = x_maximum + 1.5   ## modify if you can't see the estimates properly
-dat2$lower_lim = dat2$upper_lim = NA
-dat2$lower_lim[ dat2$lower<x_minimum ] = x_minimum
-dat2$upper_lim[ dat2$upper>x_maximum ] = x_maximum
-dat2$lower[ dat2$lower<x_minimum ] = x_minimum
-dat2$upper[ dat2$upper>x_maximum ] = x_maximum
+
+dat2 = dat2 %>% 
+  mutate(lower_limited=lower, upper_limited=upper, lower_arrow=NA, upper_arrow=NA)
+
+dat2$lower_limited[ dat2$lower<x_minimum ] = x_minimum
+dat2$upper_limited[ dat2$upper>x_maximum ] = x_maximum
+dat2$lower_arrow[ dat2$lower<x_minimum ] = x_minimum
+dat2$upper_arrow[ dat2$upper>x_maximum ] = x_maximum
 
 ## create an object to "store" the plot information
-p = ggplot(data=dat2, aes(x=est, y=label, xmin=lower, xmax=upper)) +
+p = ggplot(data=dat2, aes(x=est, y=label, xmin=lower_limited, xmax=upper_limited)) +
   geom_hline(aes(yintercept = label, colour = colour), size = 7) + 
   scale_colour_identity() +
   geom_pointrange() +
@@ -59,9 +64,9 @@ p = ggplot(data=dat2, aes(x=est, y=label, xmin=lower, xmax=upper)) +
                      breaks=c(0.9,1,1.5,2),    ## modify to change how the x axis values is labelled 
                      expand=c(0,0)) +
   coord_cartesian(xlim=c(x_minimum, x_maximum_labels)) + 
-  geom_segment(data = dat2, aes(x=lower_lim, xend=lower_lim, y=label, yend=label), size = 0.8,
+  geom_segment(data = dat2, aes(x=lower_arrow, xend=lower_arrow, y=label, yend=label), size = 0.8,
                arrow = arrow(length = unit(0.3, "cm"))) +
-  geom_segment(data = dat2, aes(x=upper_lim, xend=upper_lim+0.00001, y=label, yend=label), size = 0.8,
+  geom_segment(data = dat2, aes(x=upper_arrow, xend=upper_arrow+0.00001, y=label, yend=label), size = 0.8,
                arrow = arrow(length = unit(0.3, "cm"))) +
   labs(title="Iron PGS and haemochromatosis", 
        x='Hazard Ratio [95% Confidence Intervals]',
