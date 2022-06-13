@@ -38,7 +38,7 @@ dat2$colour[1:(floor(nrow(dat2)/2)*2)] = rep(c("white", "gray90"), floor(nrow(da
 
 ## create variable with combined est and cis
 dat2$est_combined = ""
-for (ii in 1:nrow(dat2))  dat2$est_combined[ii] = paste0(round_hr(dat2$est[ii]), " (", round_hr(dat2$lower[ii]), " to ", round_hr(dat2$upper[ii]), ")")
+for (ii in 1:nrow(dat2))  dat2$est_combined[ii] = paste0(round_hr(dat2$est[ii]), " [", round_hr(dat2$lower[ii]), " to ", round_hr(dat2$upper[ii]), "]")
 
 ## identify lines where CIs will go beyond axis limits
 ##     worth having slightly beyond the round number so that axis labels drawn correctly
