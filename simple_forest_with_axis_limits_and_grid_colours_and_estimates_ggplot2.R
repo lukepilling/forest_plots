@@ -40,12 +40,13 @@ dat2$colour[1:(floor(nrow(dat2)/2)*2)] = rep(c("white", "gray90"), floor(nrow(da
 dat2$est_combined = ""
 for (ii in 1:nrow(dat2))  dat2$est_combined[ii] = paste0(round_hr(dat2$est[ii]), " [", round_hr(dat2$lower[ii]), " to ", round_hr(dat2$upper[ii]), "]")
 
-## identify lines where CIs will go beyond axis limits
-##     worth having slightly beyond the round number so that axis labels drawn correctly
+## define minimum and maximum x-axis values to be shown, and where to put the x-axis labels
+x_labels = c(0.9,1,1.5,2)
 x_minimum = 0.899
 x_maximum = 2.01
-x_maximum_labels = x_maximum + 1.5   ## modify if you can't see the estimates properly
+x_maximum_plus_estimates = x_maximum + 1.1   ## modify if you can't see the estimates properly
 
+## identify lines where CIs will go beyond axis limits
 dat2 = dat2 %>% 
   mutate(lower_limited=lower, upper_limited=upper, lower_arrow=NA, upper_arrow=NA)
 
@@ -56,14 +57,15 @@ dat2$upper_arrow[ dat2$upper>x_maximum ] = x_maximum
 
 ## create an object to "store" the plot information
 p = ggplot(data=dat2, aes(x=est, y=label, xmin=lower_limited, xmax=upper_limited)) +
-  geom_hline(aes(yintercept = label, colour = colour), size = 7) + 
+  geom_hline(aes(yintercept = label, colour = colour), size = 10) + 
   scale_colour_identity() +
   geom_pointrange() +
+  #geom_vline(xintercept=x_labels, lty=2, colour="grey75") +     ## uncomment to show more vertical reference lines
   geom_vline(xintercept=1, lty=2) + 
   scale_x_continuous(trans='log', 
-                     breaks=c(0.9,1,1.5,2),    ## modify to change how the x axis values is labelled 
-                     expand=c(0,0)) +
-  coord_cartesian(xlim=c(x_minimum, x_maximum_labels)) + 
+                     breaks=x_labels,    
+                     expand=c(0.01,0)) +
+  coord_cartesian(xlim=c(x_minimum, x_maximum_plus_estimates)) + 
   geom_segment(data = dat2, aes(x=lower_arrow, xend=lower_arrow, y=label, yend=label), size = 0.8,
                arrow = arrow(length = unit(0.3, "cm"))) +
   geom_segment(data = dat2, aes(x=upper_arrow, xend=upper_arrow+0.00001, y=label, yend=label), size = 0.8,
