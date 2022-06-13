@@ -30,9 +30,6 @@ dat2 = dat %>%
 dat2 = dat2 %>% arrange(est)
 dat2$label = factor(dat2$label, levels = dat2$label[1:length(dat2$label)])
 
-## create variable to store order
-dat2$order = as.numeric(1:nrow(dat2))
-
 ## create variable to store background colour info so we can alternate between white and grey
 dat2$colour = "white"
 dat2$colour[1:(floor(nrow(dat2)/2)*2)] = rep(c("white", "gray90"), floor(nrow(dat2)/2))
@@ -59,7 +56,7 @@ p = ggplot(data=dat2, aes(x=est, y=label, xmin=lower, xmax=upper)) +
   geom_pointrange() +
   geom_vline(xintercept=1, lty=2) + 
   scale_x_continuous(trans='log', 
-                     breaks=c(0.9,1,1.5,2),
+                     breaks=c(0.9,1,1.5,2),    ## modify to change how the x axis values is labelled 
                      expand=c(0,0)) +
   coord_cartesian(xlim=c(x_minimum, x_maximum_labels)) + 
   geom_segment(data = dat2, aes(x=lower_lim, xend=lower_lim, y=label, yend=label), size = 0.8,
